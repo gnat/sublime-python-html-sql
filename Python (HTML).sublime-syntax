@@ -1,0 +1,197 @@
+%YAML 1.2
+---
+name: Python (HTML)
+scope: source.python.html
+
+extends: Packages/Python/Python.sublime-syntax
+
+file_extensions:
+  - py
+
+variables:
+  html_indicator: |-
+    (?x: \s* (?:
+    \<.+?\>
+    ) \s )
+
+contexts:
+  string-quoted-double-block:
+    # Triple-quoted raw string
+    - match: '([uU]?r)(""")'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.double.block.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python string.quoted.double.block.python
+        - match: '(?={{html_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: '"""'
+              scope: string.quoted.double.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:text.html.basic
+              with_prototype:
+                - match: '(?=""")'
+                  pop: true
+                - include: escaped-unicode-char
+                - include: constant-placeholder
+    # Triple-quoted string, unicode or not, starting with an HTML tag
+    - match: '([uU]?)(""")'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.double.block.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python string.quoted.double.block.python
+        - match: '(?={{html_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: '"""'
+              scope: string.quoted.double.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:text.html.basic
+              with_prototype:
+                - match: '(?=""")'
+                  pop: true
+                - include: line-continuation-inside-block-string
+                - include: escaped-unicode-char
+                - include: escaped-char
+                - include: constant-placeholder
+
+  string-quoted-double:
+    # Single-line capital R raw string, unicode or not, no syntax embedding
+    - match: '([uU]?R)(")'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python string.quoted.double.python
+        - match: '"'
+          scope: punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+    # Single-line raw string, unicode or not, starting with a HTML tag
+    - match: '([uU]?r)(")(?={{html_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: '"'
+          scope: string.quoted.double.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:text.html.basic
+          with_prototype:
+            - match: '(?="|\n)'
+              pop: true
+            - include: constant-placeholder
+            - include: line-continuation-inside-string
+    # Single-line string, unicode or not, starting with an HTML tag
+    - match: '([uU]?)(")(?={{html_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: '"'
+          scope: string.quoted.double.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:text.html.basic
+          with_prototype:
+            - match: '(?="|\n)'
+              pop: true
+            - include: escaped-unicode-char
+            - include: escaped-char
+            - include: line-continuation-inside-string
+            - include: constant-placeholder
+
+
+  string-quoted-single-block:
+    # Triple-quoted raw string, unicode or not, will detect HTML tag
+    - match: ([uU]?r)(''')
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.single.block.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python string.quoted.single.block.python
+        - match: '(?={{html_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: "'''"
+              scope: string.quoted.single.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:text.html.basic
+              with_prototype:
+                - match: (?=''')
+                  pop: true
+                - include: escaped-unicode-char
+                - include: escaped-char
+                - include: constant-placeholder
+    # Triple-quoted string, unicode or not, will detect HTML tag
+    - match: ([uU]?)(''')
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.single.block.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python string.quoted.single.block.python
+        - match: '(?={{html_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: "'''"
+              scope: string.quoted.single.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:text.html.basic
+              with_prototype:
+                - match: (?=''')
+                  pop: true
+                - include: line-continuation-inside-block-string
+                - include: escaped-unicode-char
+                - include: escaped-char
+                - include: constant-placeholder
+
+  string-quoted-single:
+    # Single-line raw string, unicode or not, starting with an HTML tag
+    - match: '([uU]?r)('')(?={{html_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.single.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: "'"
+          scope: string.quoted.single.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:text.html.basic
+          with_prototype:
+            - match: '(?=''|\n)'
+              pop: true
+            - include: line-continuation-inside-string
+            - include: constant-placeholder
+    # Single-line string, unicode or not, starting with an HTML tag
+    - match: '([uU]?)('')(?={{html_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.single.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: "'"
+          scope: string.quoted.single.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:text.html.basic
+          with_prototype:
+            - match: '(?=''|\n)'
+              pop: true
+            - include: escaped-unicode-char
+            - include: escaped-char
+            - include: line-continuation-inside-string
+            - include: constant-placeholder
