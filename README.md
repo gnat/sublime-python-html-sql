@@ -12,3 +12,9 @@ Pairs well with:
 Direct: `Preferences` ➡️ `Browse Packages ...` ➡️ `cd User` ➡️ [Download and extract the latest.](https://github.com/gnat/sublime-python-html/archive/refs/heads/main.zip)
 
 Use it: `View` ➡️ `Syntax` ➡️ `User` ➡️ `Python (HTML)`
+
+### Suggested Sublime Color Schemes
+
+* [Invader Zim](https://github.com/gnat/sublime-invader-zim) 🛸
+* Mariana (Built-in)
+* Monokai (Built-in)
