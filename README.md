@@ -11,6 +11,8 @@ Pairs well with:
 
 Direct: `Preferences` ➡️ `Browse Packages ...` ➡️ `cd User` ➡️ [Download and extract the latest.](https://github.com/gnat/sublime-python-html/archive/refs/heads/main.zip)
 
+Package Control: `Primary+P` ➡️ `Package Control: Add Repository` ➡️ `https://github.com/gnat/sublime-python-html` ➡️ `Primary+P` ➡️ `Package Install` ➡️ `sublime-python-html`
+
 Use it: `View` ➡️ `Syntax` ➡️ `User` ➡️ `Python (HTML)`
 
 ## Suggested Sublime Color Schemes
