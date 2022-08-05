@@ -13,8 +13,12 @@ Direct: `Preferences` ➡️ `Browse Packages ...` ➡️ `cd User` ➡️ [Down
 
 Use it: `View` ➡️ `Syntax` ➡️ `User` ➡️ `Python (HTML)`
 
-### Suggested Sublime Color Schemes
+## Suggested Sublime Color Schemes
 
 * [Invader Zim](https://github.com/gnat/sublime-invader-zim) 🛸
 * Mariana (Built-in)
 * Monokai (Built-in)
+
+## Alternative for VS Code / Codium
+
+* https://github.com/ptweir/python-string-sql
