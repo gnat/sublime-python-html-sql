@@ -1,2 +1,4 @@
-# sublime-python-html
-HTML highlighter extension for strings in Python for Sublime Text!
+# Highlight HTML in Python for Sublime!
+Pairs well with:
+* Darkstar: https://github.com/lllama/dark-star
+* Raw strings for Jinja.
