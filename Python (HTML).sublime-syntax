@@ -60,17 +60,6 @@ contexts:
                 - include: constant-placeholder
 
   string-quoted-double:
-    # Single-line capital R raw string, unicode or not, no syntax embedding
-    - match: '([uU]?R)(")'
-      captures:
-        1: storage.type.string.python
-        2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
-      push:
-        - meta_content_scope: meta.string.python string.quoted.double.python
-        - match: '"'
-          scope: punctuation.definition.string.end.python
-          set: after-expression
-        - include: line-continuation-inside-string
     # Single-line raw string, unicode or not, starting with a HTML tag
     - match: '([uU]?r)(")(?={{html_indicator}})'
       captures:
