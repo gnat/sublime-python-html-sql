@@ -16,6 +16,7 @@ variables:
 
 contexts:
   string-quoted-double-block:
+    - meta_prepend: true
     # Triple-quoted raw string
     - match: '([uU]?r)(""")'
       captures:
@@ -60,6 +61,7 @@ contexts:
                 - include: constant-placeholder
 
   string-quoted-double:
+    - meta_prepend: true
     # Single-line raw string, unicode or not, starting with a HTML tag
     - match: '([uU]?r)(")(?={{html_indicator}})'
       captures:
@@ -101,6 +103,7 @@ contexts:
 
 
   string-quoted-single-block:
+    - meta_prepend: true
     # Triple-quoted raw string, unicode or not, will detect HTML tag
     - match: ([uU]?r)(''')
       captures:
@@ -146,6 +149,7 @@ contexts:
                 - include: constant-placeholder
 
   string-quoted-single:
+    - meta_prepend: true
     # Single-line raw string, unicode or not, starting with an HTML tag
     - match: '([uU]?r)('')(?={{html_indicator}})'
       captures:
