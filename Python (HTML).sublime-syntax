@@ -18,7 +18,7 @@ contexts:
   string-quoted-double-block:
     - meta_prepend: true
     # Triple-quoted raw string
-    - match: '([uU]?r)(""")'
+    - match: '([uU]?[rf])(""")'
       captures:
         1: storage.type.string.python
         2: meta.string.python string.quoted.double.block.python punctuation.definition.string.begin.python
@@ -37,6 +37,10 @@ contexts:
                   pop: true
                 - include: escaped-unicode-char
                 - include: constant-placeholder
+        - match: '"""'
+          scope: string.quoted.double.block.python punctuation.definition.string.end.python
+          set: after-expression
+
     # Triple-quoted string, unicode or not, starting with an HTML tag
     - match: '([uU]?)(""")'
       captures:
@@ -59,11 +63,15 @@ contexts:
                 - include: escaped-unicode-char
                 - include: escaped-char
                 - include: constant-placeholder
+        - match: '"""'
+          scope: string.quoted.double.block.python punctuation.definition.string.end.python
+          set: after-expression
+
 
   string-quoted-double:
     - meta_prepend: true
     # Single-line raw string, unicode or not, starting with a HTML tag
-    - match: '([uU]?r)(")(?={{html_indicator}})'
+    - match: '([uU]?[rf])(")(?={{html_indicator}})'
       captures:
         1: storage.type.string.python
         2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
@@ -80,6 +88,7 @@ contexts:
               pop: true
             - include: constant-placeholder
             - include: line-continuation-inside-string
+
     # Single-line string, unicode or not, starting with an HTML tag
     - match: '([uU]?)(")(?={{html_indicator}})'
       captures:
@@ -105,7 +114,7 @@ contexts:
   string-quoted-single-block:
     - meta_prepend: true
     # Triple-quoted raw string, unicode or not, will detect HTML tag
-    - match: ([uU]?r)(''')
+    - match: ([uU]?[rf])(''')
       captures:
         1: storage.type.string.python
         2: meta.string.python string.quoted.single.block.python punctuation.definition.string.begin.python
@@ -125,6 +134,9 @@ contexts:
                 - include: escaped-unicode-char
                 - include: escaped-char
                 - include: constant-placeholder
+        - match: "'''"
+          scope: string.quoted.single.block.python punctuation.definition.string.end.python
+          set: after-expression
     # Triple-quoted string, unicode or not, will detect HTML tag
     - match: ([uU]?)(''')
       captures:
@@ -147,11 +159,13 @@ contexts:
                 - include: escaped-unicode-char
                 - include: escaped-char
                 - include: constant-placeholder
-
+        - match: "'''"
+          scope: string.quoted.single.block.python punctuation.definition.string.end.python
+          set: after-expression
   string-quoted-single:
     - meta_prepend: true
     # Single-line raw string, unicode or not, starting with an HTML tag
-    - match: '([uU]?r)('')(?={{html_indicator}})'
+    - match: '([uU]?[rf])('')(?={{html_indicator}})'
       captures:
         1: storage.type.string.python
         2: meta.string.python string.quoted.single.python punctuation.definition.string.begin.python
