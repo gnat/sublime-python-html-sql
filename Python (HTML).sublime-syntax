@@ -11,7 +11,7 @@ file_extensions:
 variables:
   html_indicator: |-
     (?x: \s* (?:
-    \<.+?\>
+    \<[a-zA-Z].*?\>
     ) \s )
 
 contexts:
