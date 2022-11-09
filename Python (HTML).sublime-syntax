@@ -11,38 +11,18 @@ file_extensions:
 variables:
   html_indicator: |-
     (?x: \s* (?:
-    \<[a-zA-Z].*?\>
+    \<[a-zA-Z\-\!].*?\>
+    ) \s )
+  sql_indicator: |-
+    (?x: \s* (?:
+    SELECT|WITH|INSERT|UPDATE|DELETE|ALTER|ANALYZE|ATTACH|BEGIN|COMMIT|CREATE|DELETE|DETACH|DROP|EXPLAIN|INSERT|PRAGMA|REINDEX|RELEASE|REPLACE|ROLLBACK|SAVEPOINT|SELECT|UPDATE|VACUUM
     ) \s )
 
 contexts:
   string-quoted-double-block:
     - meta_prepend: true
     # Triple-quoted raw string
-    - match: '([uU]?[rf])(""")'
-      captures:
-        1: storage.type.string.python
-        2: meta.string.python string.quoted.double.block.python punctuation.definition.string.begin.python
-      push:
-        - meta_content_scope: meta.string.python string.quoted.double.block.python
-        - match: '(?={{html_indicator}})'
-          set:
-            - meta_scope: meta.string.python
-            - match: '"""'
-              scope: string.quoted.double.block.python punctuation.definition.string.end.python
-              set: after-expression
-            - match: ''
-              push: scope:text.html.basic
-              with_prototype:
-                - match: '(?=""")'
-                  pop: true
-                - include: escaped-unicode-char
-                - include: constant-placeholder
-        - match: '"""'
-          scope: string.quoted.double.block.python punctuation.definition.string.end.python
-          set: after-expression
-
-    # Triple-quoted string, unicode or not, starting with an HTML tag
-    - match: '([uU]?)(""")'
+    - match: '([uUrf]{0,3})(""")'
       captures:
         1: storage.type.string.python
         2: meta.string.python string.quoted.double.block.python punctuation.definition.string.begin.python
@@ -63,34 +43,29 @@ contexts:
                 - include: escaped-unicode-char
                 - include: escaped-char
                 - include: constant-placeholder
+        - match: '(?={{sql_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: '"""'
+              scope: string.quoted.double.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:source.sql
+              with_prototype:
+                - match: '(?=""")'
+                  pop: true
+                - include: line-continuation-inside-block-string
+                - include: escaped-unicode-char
+                - include: escaped-char
+                - include: constant-placeholder
         - match: '"""'
           scope: string.quoted.double.block.python punctuation.definition.string.end.python
           set: after-expression
 
-
   string-quoted-double:
     - meta_prepend: true
     # Single-line raw string, unicode or not, starting with a HTML tag
-    - match: '([uU]?[rf])(")(?={{html_indicator}})'
-      captures:
-        1: storage.type.string.python
-        2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
-      push:
-        - meta_content_scope: meta.string.python
-        - match: '"'
-          scope: string.quoted.double.python punctuation.definition.string.end.python
-          set: after-expression
-        - include: line-continuation-inside-string
-        - match: ''
-          push: scope:text.html.basic
-          with_prototype:
-            - match: '(?="|\n)'
-              pop: true
-            - include: constant-placeholder
-            - include: line-continuation-inside-string
-
-    # Single-line string, unicode or not, starting with an HTML tag
-    - match: '([uU]?)(")(?={{html_indicator}})'
+    - match: '([uUrf]{0,3})(")(?={{html_indicator}})'
       captures:
         1: storage.type.string.python
         2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
@@ -110,35 +85,10 @@ contexts:
             - include: line-continuation-inside-string
             - include: constant-placeholder
 
-
   string-quoted-single-block:
     - meta_prepend: true
     # Triple-quoted raw string, unicode or not, will detect HTML tag
-    - match: ([uU]?[rf])(''')
-      captures:
-        1: storage.type.string.python
-        2: meta.string.python string.quoted.single.block.python punctuation.definition.string.begin.python
-      push:
-        - meta_content_scope: meta.string.python string.quoted.single.block.python
-        - match: '(?={{html_indicator}})'
-          set:
-            - meta_scope: meta.string.python
-            - match: "'''"
-              scope: string.quoted.single.block.python punctuation.definition.string.end.python
-              set: after-expression
-            - match: ''
-              push: scope:text.html.basic
-              with_prototype:
-                - match: (?=''')
-                  pop: true
-                - include: escaped-unicode-char
-                - include: escaped-char
-                - include: constant-placeholder
-        - match: "'''"
-          scope: string.quoted.single.block.python punctuation.definition.string.end.python
-          set: after-expression
-    # Triple-quoted string, unicode or not, will detect HTML tag
-    - match: ([uU]?)(''')
+    - match: ([uUrf]{0,3})(''')
       captures:
         1: storage.type.string.python
         2: meta.string.python string.quoted.single.block.python punctuation.definition.string.begin.python
@@ -159,31 +109,29 @@ contexts:
                 - include: escaped-unicode-char
                 - include: escaped-char
                 - include: constant-placeholder
+        - match: '(?={{sql_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: "'''"
+              scope: string.quoted.single.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:source.sql
+              with_prototype:
+                - match: (?=''')
+                  pop: true
+                - include: line-continuation-inside-block-string
+                - include: escaped-unicode-char
+                - include: escaped-char
+                - include: constant-placeholder
         - match: "'''"
           scope: string.quoted.single.block.python punctuation.definition.string.end.python
           set: after-expression
+
   string-quoted-single:
     - meta_prepend: true
-    # Single-line raw string, unicode or not, starting with an HTML tag
-    - match: '([uU]?[rf])('')(?={{html_indicator}})'
-      captures:
-        1: storage.type.string.python
-        2: meta.string.python string.quoted.single.python punctuation.definition.string.begin.python
-      push:
-        - meta_content_scope: meta.string.python
-        - match: "'"
-          scope: string.quoted.single.python punctuation.definition.string.end.python
-          set: after-expression
-        - include: line-continuation-inside-string
-        - match: ''
-          push: scope:text.html.basic
-          with_prototype:
-            - match: '(?=''|\n)'
-              pop: true
-            - include: line-continuation-inside-string
-            - include: constant-placeholder
     # Single-line string, unicode or not, starting with an HTML tag
-    - match: '([uU]?)('')(?={{html_indicator}})'
+    - match: '([uUrf]{0,3})('')(?={{html_indicator}})'
       captures:
         1: storage.type.string.python
         2: meta.string.python string.quoted.single.python punctuation.definition.string.begin.python
