@@ -1,4 +1,4 @@
-# Highlight HTML in Python for Sublime!
+# Highlight HTML and SQL in Python for Sublime!
 Pairs well with:
 * Darkstar: https://github.com/lllama/dark-star
 * Raw strings for Jinja.
