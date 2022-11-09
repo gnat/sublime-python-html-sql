@@ -1,7 +1,4 @@
 # Highlight HTML and SQL in Python for Sublime!
-Pairs well with:
-* Darkstar: https://github.com/lllama/dark-star
-* Raw strings for Jinja.
 
 ## Screenshot
 
@@ -20,6 +17,10 @@ Use it: `View` ➡️ `Syntax` ➡️ `User` ➡️ `Python (HTML)`
 * [Invader Zim](https://github.com/gnat/sublime-invader-zim) 🛸
 * Mariana (Built-in)
 * Monokai (Built-in)
+
+Pairs well with:
+* Darkstar: https://github.com/lllama/dark-star
+* Raw strings for Jinja.
 
 ## Alternative for VS Code / Codium
 
