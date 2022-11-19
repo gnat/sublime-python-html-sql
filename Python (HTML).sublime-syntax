@@ -1,12 +1,11 @@
 %YAML 1.2
 ---
-name: Python (HTML)
+name: Python (with HTML, SQL)
 scope: source.python.html
 
 extends: Packages/Python/Python.sublime-syntax
 
-file_extensions:
-  - py
+file_extensions: [py]
 
 variables:
   html_indicator: |-
@@ -21,7 +20,7 @@ variables:
 contexts:
   string-quoted-double-block:
     - meta_prepend: true
-    # Triple-quoted raw string
+    # String block, double quote (HTML / SQL)
     - match: '([uUrf]{0,3})(""")'
       captures:
         1: storage.type.string.python
@@ -64,7 +63,7 @@ contexts:
 
   string-quoted-double:
     - meta_prepend: true
-    # Single-line raw string, unicode or not, starting with a HTML tag
+    # String, double quote (HTML)
     - match: '([uUrf]{0,3})(")(?={{html_indicator}})'
       captures:
         1: storage.type.string.python
@@ -84,10 +83,30 @@ contexts:
             - include: escaped-char
             - include: line-continuation-inside-string
             - include: constant-placeholder
+    # String, double quote (SQL)
+    - match: '([uUrf]{0,3}?)(")(?={{sql_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: '"'
+          scope: string.quoted.double.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:source.sql
+          with_prototype:
+            - match: '(?="|\n)'
+              pop: true
+            - include: escaped-unicode-char
+            - include: escaped-char
+            - include: line-continuation-inside-string
+            - include: constant-placeholder
 
   string-quoted-single-block:
     - meta_prepend: true
-    # Triple-quoted raw string, unicode or not, will detect HTML tag
+    # String block, single quote (HTML / SQL)
     - match: ([uUrf]{0,3})(''')
       captures:
         1: storage.type.string.python
@@ -130,7 +149,7 @@ contexts:
 
   string-quoted-single:
     - meta_prepend: true
-    # Single-line string, unicode or not, starting with an HTML tag
+    # String, single quote (HTML)
     - match: '([uUrf]{0,3})('')(?={{html_indicator}})'
       captures:
         1: storage.type.string.python
@@ -143,6 +162,26 @@ contexts:
         - include: line-continuation-inside-string
         - match: ''
           push: scope:text.html.basic
+          with_prototype:
+            - match: '(?=''|\n)'
+              pop: true
+            - include: escaped-unicode-char
+            - include: escaped-char
+            - include: line-continuation-inside-string
+            - include: constant-placeholder
+    # String, single quote (SQL)
+    - match: '([uUrf]{0,3})('')(?={{sql_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.single.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: "'"
+          scope: string.quoted.single.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:source.sql
           with_prototype:
             - match: '(?=''|\n)'
               pop: true
