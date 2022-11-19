@@ -1,4 +1,4 @@
-# Highlight HTML and SQL in Python for Sublime!
+# Highlight HTML + SQL in Python for Sublime!
 
 ## Screenshot
 
