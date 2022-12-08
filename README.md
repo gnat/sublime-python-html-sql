@@ -31,7 +31,6 @@ Pairs well with:
 Use it: `Preferences` ➡️ `Customize Color Scheme`
 
 ```json
-// Documentation at https://www.sublimetext.com/docs/color_schemes.html
 {
 	"variables":
 	{
