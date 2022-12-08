@@ -42,12 +42,6 @@ Use it: `Preferences` ➡️ `Customize Color Scheme`
 	"rules":
 	[
 		{
-			"name": "php highlight",
-			"scope": "meta.embedded.php",
-
-			"background": "hsl(180, 0%, 3%)"
-		},
-		{
 			"name": "sql highlight",
 			"scope": "source.sql",
 
