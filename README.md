@@ -26,43 +26,32 @@ Pairs well with:
 
 * https://github.com/ptweir/python-string-sql
 
-## Dark background color for embedded blocks.
+## Bonus! Dark background color for embedded blocks.
 
 Use it: `Preferences` ➡️ `Customize Color Scheme`
 
 ```json
 {
-	"variables":
-	{
-	},
-	"globals":
-	{
-
-	},
 	"rules":
 	[
 		{
 			"name": "sql highlight",
 			"scope": "source.sql",
-
 			"background": "hsl(180, 0%, 3%)"
 		},
 		{
 			"name": "py highlight",
 			"scope": "string.quoted.double.block.python",
-
 			"background": "hsl(180, 0%, 3%)"
 		},
 		{
 			"name": "py highlight2",
 			"scope": "source.js.embedded.html",
-
 			"background": "hsl(180, 0%, 3%)"
 		},
 		{
 			"name": "py highlight3",
 			"scope": "text.html.basic",
-
 			"background": "hsl(180, 0%, 3%)"
 		},
 	]
