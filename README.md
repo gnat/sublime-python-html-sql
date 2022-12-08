@@ -25,3 +25,54 @@ Pairs well with:
 ## Alternative for VS Code / Codium
 
 * https://github.com/ptweir/python-string-sql
+
+## Dark background color for embedded blocks.
+
+Use it: `Preferences` ➡️ `Customize Color Scheme`
+
+```json
+// Documentation at https://www.sublimetext.com/docs/color_schemes.html
+{
+	"variables":
+	{
+	},
+	"globals":
+	{
+
+	},
+	"rules":
+	[
+		{
+			"name": "php highlight",
+			"scope": "meta.embedded.php",
+
+			"background": "hsl(180, 0%, 3%)"
+		},
+		{
+			"name": "sql highlight",
+			"scope": "source.sql",
+
+			"background": "hsl(180, 0%, 3%)"
+		},
+		{
+			"name": "py highlight",
+			"scope": "string.quoted.double.block.python",
+
+			"background": "hsl(180, 0%, 3%)"
+		},
+		{
+			"name": "py highlight2",
+			"scope": "source.js.embedded.html",
+
+			"background": "hsl(180, 0%, 3%)"
+		},
+		{
+			"name": "py highlight3",
+			"scope": "text.html.basic",
+
+			"background": "hsl(180, 0%, 3%)"
+		},
+	]
+}
+
+```
