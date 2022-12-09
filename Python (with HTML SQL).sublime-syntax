@@ -11,6 +11,7 @@ variables:
   html_indicator: |-
     (?x: \s* (?:
     \<[a-zA-Z\-\!].*?\>
+    |\{\%
     ) \s )
   sql_indicator: |-
     (?x: \s* (?:
