@@ -1,8 +1,7 @@
 %YAML 1.2
 ---
-name: Python (with HTML, SQL, Bash)
+name: Python (with HTML, SQL)
 scope: source.python.html
-
 
 extends: Packages/Python/Python.sublime-syntax
 
@@ -16,11 +15,11 @@ variables:
     ) \s )
   sql_indicator: |-
     (?x: \s* (?i:
-    |ALTER|ANALYZE|ATTACH|BACKUP|BEGIN|COMMIT|CREATE|DELETE|DELETE|DETACH|DROP|EXPLAIN|INSERT|INSERT|PRAGMA|REINDEX|RELEASE|REPLACE|ROLLBACK|SAVEPOINT|SELECT|SET|SHOW|UPDATE|UPDATE|VACUUM|WITH
+    ALTER|ANALYZE|ATTACH|BACKUP|BEGIN|COMMIT|CREATE|DELETE|DELETE|DETACH|DROP|EXPLAIN|INSERT|INSERT|PRAGMA|REINDEX|RELEASE|REPLACE|ROLLBACK|SAVEPOINT|SELECT|SET|SHOW|UPDATE|UPDATE|VACUUM|WITH
     ) \s )
   bash_indicator: |-
     (?x: \s* (?i:
-    |\#sh|\#bash|:;|#!/bin/bash
+    \#sh|\#bash|\:\;|\#\!\/bin\/bash
     ) \s )
 
 contexts:
