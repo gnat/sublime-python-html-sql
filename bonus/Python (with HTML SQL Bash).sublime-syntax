@@ -19,7 +19,7 @@ variables:
     ) \s )
   bash_indicator: |-
     (?x: \s* (?:
-    \#sh|\#bash|\:\;|\#\!\/bin\/bash
+    \#sh|\#bash|\:\;|\#\!\/bin\/bash|echo
     ) \s )
 
 contexts:
@@ -70,8 +70,8 @@ contexts:
               scope: string.quoted.double.block.python punctuation.definition.string.end.python
               set: after-expression
             - match: ''
-              #push: scope:source.shell.bash # Recursion error.
-              push: scope:source.java
+              push: scope:source.shell.bash # Might have recursion error.
+              #push: scope:source.go
               with_prototype:
                 - match: '(?=""")'
                   pop: true
@@ -138,7 +138,8 @@ contexts:
           set: after-expression
         - include: line-continuation-inside-string
         - match: ''
-          push: scope:source.go
+          push: scope:source.shell.bash # Might have recursion error.
+          #push: scope:source.go
           with_prototype:
             - match: '(?="|\n)'
               pop: true
