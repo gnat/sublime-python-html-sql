@@ -11,16 +11,17 @@ variables:
   html_indicator: |-
     (?x: \s* (?:
     \<[a-zA-Z\-\!].*?\>
+    |\</[a-zA-Z\-\!].*?\>
     |\{\%
-    ) \s )
+    ) \s* )
   sql_indicator: |-
     (?x: \s* (?:
     ALTER|ANALYZE|ATTACH|BACKUP|BEGIN|COMMIT|CREATE|DELETE|DELETE|DETACH|DROP|EXPLAIN|INSERT|INSERT|PRAGMA|REINDEX|RELEASE|REPLACE|ROLLBACK|SAVEPOINT|SELECT|SET|SHOW|UPDATE|UPDATE|VACUUM|WITH
-    ) \s )
+    ) \s* )
   bash_indicator: |-
     (?x: \s* (?:
     \#sh|\#bash|\:\;|\#\!\/bin\/bash|echo
-    ) \s )
+    ) \s* )
 
 contexts:
   string-quoted-double-block:
