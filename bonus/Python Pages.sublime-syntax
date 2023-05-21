@@ -1,0 +1,17 @@
+%YAML 1.2
+---
+name: Python Pages
+scope: source.python.pyp
+version: 2
+extends: Packages/HTML/HTML.sublime-syntax
+
+file_extensions: [pyp]
+
+contexts:
+  main:
+    - meta_prepend: true
+    - match: '\<\?'
+      push: scope:source.python
+      with_prototype:
+        - match: '\?\>'
+          pop: 2
