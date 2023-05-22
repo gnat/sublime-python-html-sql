@@ -11,7 +11,5 @@ contexts:
   main:
     - meta_prepend: true
     - match: '\<\?'
-      push: scope:source.python
-      with_prototype:
-        - match: '\?\>'
-          pop: 2
+      embed: scope:source.python
+      escape: '\?\>'
