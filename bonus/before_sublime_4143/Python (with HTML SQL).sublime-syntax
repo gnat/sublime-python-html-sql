@@ -1,0 +1,195 @@
+%YAML 1.2
+---
+name: Python (with HTML, SQL)
+scope: source.python.html
+
+extends: Packages/Python/Python.sublime-syntax
+
+file_extensions: [py]
+
+variables:
+  html_indicator: |-
+    (?x: \s* (?:
+    \<[a-zA-Z\-\!].*?\>
+    |\</[a-zA-Z\-\!].*?\>
+    |\{\%
+    ) \s* )
+  sql_indicator: |-
+    (?x: \s* (?:
+    ALTER|ANALYZE|ATTACH|BACKUP|BEGIN|COMMIT|CREATE|DELETE|DELETE|DETACH|DROP|EXPLAIN|INSERT|INSERT|PRAGMA|REINDEX|RELEASE|REPLACE|ROLLBACK|SAVEPOINT|SELECT|SET|SHOW|UPDATE|UPDATE|VACUUM|WITH
+    ) \s* )
+
+contexts:
+  string-quoted-double-block:
+    - meta_prepend: true
+    # String block, double quote (HTML / SQL)
+    - match: '([uUrf]{0,3})(""")'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.double.block.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python string.quoted.double.block.python
+        - match: '(?={{html_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: '"""'
+              scope: string.quoted.double.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:text.html.basic
+              #push: scope:text.jinja
+              with_prototype:
+                - match: '(?=""")'
+                  pop: true
+                - include: line-continuation-inside-block-string
+                - include: escaped-unicode-char
+                - include: escaped-char
+                - include: constant-placeholder
+        - match: '(?={{sql_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: '"""'
+              scope: string.quoted.double.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:source.sql
+              with_prototype:
+                - match: '(?=""")'
+                  pop: true
+                - include: line-continuation-inside-block-string
+                - include: escaped-unicode-char
+                - include: escaped-char
+                - include: constant-placeholder
+        - match: '"""'
+          scope: string.quoted.double.block.python punctuation.definition.string.end.python
+          set: after-expression
+
+  string-quoted-double:
+    - meta_prepend: true
+    # String, double quote (HTML)
+    - match: '([uUrf]{0,3})(")(?={{html_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: '"'
+          scope: string.quoted.double.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:text.html.basic
+          #push: scope:text.jinja
+          with_prototype:
+            - match: '(?="|\n)'
+              pop: true
+            - include: escaped-unicode-char
+            - include: escaped-char
+            - include: line-continuation-inside-string
+            - include: constant-placeholder
+    # String, double quote (SQL)
+    - match: '([uUrf]{0,3}?)(")(?={{sql_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.double.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: '"'
+          scope: string.quoted.double.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:source.sql
+          with_prototype:
+            - match: '(?="|\n)'
+              pop: true
+            - include: escaped-unicode-char
+            - include: escaped-char
+            - include: line-continuation-inside-string
+            - include: constant-placeholder
+
+  string-quoted-single-block:
+    - meta_prepend: true
+    # String block, single quote (HTML / SQL)
+    - match: ([uUrf]{0,3})(''')
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.single.block.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python string.quoted.single.block.python
+        - match: '(?={{html_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: "'''"
+              scope: string.quoted.single.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:text.html.basic
+              with_prototype:
+                - match: (?=''')
+                  pop: true
+                - include: line-continuation-inside-block-string
+                - include: escaped-unicode-char
+                - include: escaped-char
+                - include: constant-placeholder
+        - match: '(?={{sql_indicator}})'
+          set:
+            - meta_scope: meta.string.python
+            - match: "'''"
+              scope: string.quoted.single.block.python punctuation.definition.string.end.python
+              set: after-expression
+            - match: ''
+              push: scope:source.sql
+              with_prototype:
+                - match: (?=''')
+                  pop: true
+                - include: line-continuation-inside-block-string
+                - include: escaped-unicode-char
+                - include: escaped-char
+                - include: constant-placeholder
+        - match: "'''"
+          scope: string.quoted.single.block.python punctuation.definition.string.end.python
+          set: after-expression
+
+  string-quoted-single:
+    - meta_prepend: true
+    # String, single quote (HTML)
+    - match: '([uUrf]{0,3})('')(?={{html_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.single.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: "'"
+          scope: string.quoted.single.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:text.html.basic
+          with_prototype:
+            - match: '(?=''|\n)'
+              pop: true
+            - include: escaped-unicode-char
+            - include: escaped-char
+            - include: line-continuation-inside-string
+            - include: constant-placeholder
+    # String, single quote (SQL)
+    - match: '([uUrf]{0,3})('')(?={{sql_indicator}})'
+      captures:
+        1: storage.type.string.python
+        2: meta.string.python string.quoted.single.python punctuation.definition.string.begin.python
+      push:
+        - meta_content_scope: meta.string.python
+        - match: "'"
+          scope: string.quoted.single.python punctuation.definition.string.end.python
+          set: after-expression
+        - include: line-continuation-inside-string
+        - match: ''
+          push: scope:source.sql
+          with_prototype:
+            - match: '(?=''|\n)'
+              pop: true
+            - include: escaped-unicode-char
+            - include: escaped-char
+            - include: line-continuation-inside-string
+            - include: constant-placeholder
